@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Stylist {
+  id           String        @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  photoUrl     String?
+  active       Boolean       @default(true)
+  // SQLite doesn't natively support JSON arrays/objects. 
+  // We use String and parse it in the application. 
+  // Change to Json when migrating to PostgreSQL.
+  schedule     String
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Service {
+  id           String        @id @default(cuid())
+  name         String
+  duration     Int
+  price        Float
+  active       Boolean       @default(true)
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  date        DateTime
+  endTime     DateTime
+  status      String   @default("confirmed") // confirmed, completed, cancelled, no_show
+  clientName  String
+  clientPhone String
+  clientEmail String?
+  notes       String?
+  stylist     Stylist  @relation(fields: [stylistId], references: [id])
+  stylistId   String
+  service     Service  @relation(fields: [serviceId], references: [id])
+  serviceId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@index([stylistId])
+  @@index([status])
+}
+
+model ClosedDay {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Settings {
+  id              String   @id @default("main")
+  salonName       String   @default("Tu Peluquería")
+  bufferMinutes   Int      @default(10)
+  // SQLite doesn't natively support JSON. Use String locally.
+  defaultSchedule String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

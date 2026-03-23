@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(public)/confirmacion/page": "app/(public)/confirmacion/page.js",
+  "/api/admin/appointments/route": "app/api/admin/appointments/route.js",
+  "/api/admin/stylists/route": "app/api/admin/stylists/route.js",
+  "/api/admin/services/route": "app/api/admin/services/route.js",
+  "/(admin)/admin/agenda/page": "app/(admin)/admin/agenda/page.js",
+  "/(admin)/admin/page": "app/(admin)/admin/page.js",
+  "/(admin)/admin/servicios/page": "app/(admin)/admin/servicios/page.js",
+  "/(admin)/admin/peluqueros/page": "app/(admin)/admin/peluqueros/page.js"
+}
