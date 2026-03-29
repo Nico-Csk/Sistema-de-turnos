@@ -20,17 +20,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Faltan datos' }, { status: 400 })
   }
 
-  const defaultSchedule = JSON.stringify({
+  const defaultSchedule = {
     mon: { start: "09:00", end: "19:00" },
     tue: { start: "09:00", end: "19:00" },
     wed: { start: "09:00", end: "19:00" },
     thu: { start: "09:00", end: "19:00" },
     fri: { start: "09:00", end: "19:00" },
     sat: { start: "10:00", end: "14:00" }
-  })
+  }
 
   const res = await prisma.stylist.create({ 
-    data: { name, photoUrl: photoUrl || null, schedule: defaultSchedule } 
+    data: { name, photoUrl: photoUrl || null, schedule: defaultSchedule as any } 
   })
   return NextResponse.json(res)
 }

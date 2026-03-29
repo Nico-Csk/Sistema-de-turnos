@@ -164,6 +164,18 @@ export default function AgendaPage() {
                       <AlertTriangle className="w-4 h-4" />
                       Ausente
                     </button>
+                    <a
+                      href={buildWhatsAppLink(
+                        appt.clientPhone, 
+                        `Hola ${appt.clientName}, te recordamos tu turno para ${appt.service?.name} el día ${format(new Date(appt.date), "EEEE d 'de' MMMM", { locale: es })} a las ${format(new Date(appt.date), 'HH:mm')}. ¡Te esperamos!`
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-500 text-[#0f0f0f] hover:bg-green-400 rounded-xl text-sm font-bold transition-colors"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Recordatorio
+                    </a>
                   </>
                 )}
                 {appt.status !== 'confirmed' && (

@@ -7,7 +7,7 @@ import StepServicePicker, { type Service } from './StepServicePicker'
 import StepStylistPicker, { type Stylist } from './StepStylistPicker'
 import StepDateTimePicker from './StepDateTimePicker'
 import StepClientForm, { type ClientData } from './StepClientForm'
-import { Check, Scissors } from 'lucide-react'
+import { Check, Scissors, User, CalendarDays, UserCheck } from 'lucide-react'
 
 export interface BookingState {
   service: Service | null
@@ -17,7 +17,12 @@ export interface BookingState {
   client: ClientData | null
 }
 
-const STEPS = ['Servicio', 'Peluquero', 'Fecha y hora', 'Tus datos']
+const STEPS = [
+  { label: 'Servicio', icon: Scissors },
+  { label: 'Peluquero', icon: User },
+  { label: 'Fecha y hora', icon: CalendarDays },
+  { label: 'Tus datos', icon: UserCheck },
+]
 
 export default function BookingWizard() {
   const router = useRouter()
@@ -65,6 +70,7 @@ export default function BookingWizard() {
           clientPhone: clientData.phone,
           clientEmail: clientData.email || '',
           notes: clientData.notes || '',
+          _honey: clientData._honey || '',
         }),
       })
 
@@ -84,6 +90,7 @@ export default function BookingWizard() {
         stylist: appointment.stylist?.name || 'Cualquier peluquero',
         date: appointmentDate.toISOString(),
         client: clientData.name,
+        token: appointment.cancelToken || '',
       })
       router.push(`/confirmacion?${params.toString()}`)
     } catch {
@@ -96,11 +103,11 @@ export default function BookingWizard() {
     <div className="w-full max-w-2xl mx-auto">
       {/* Step indicator */}
       <div className="flex items-center justify-between mb-10 px-2">
-        {STEPS.map((label, i) => (
+        {STEPS.map(({ label, icon: Icon }, i) => (
           <div key={label} className="flex items-center flex-1">
             <div className="flex flex-col items-center">
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                   i < step
                     ? 'bg-[#c9a84c] text-[#0f0f0f]'
                     : i === step
@@ -108,10 +115,10 @@ export default function BookingWizard() {
                     : 'bg-[#2a2a2a] text-[#a0a0a0]'
                 }`}
               >
-                {i < step ? <Check className="w-4 h-4" /> : i + 1}
+                {i < step ? <Check className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
               </div>
               <span
-                className={`mt-1.5 text-xs font-medium whitespace-nowrap ${
+                className={`mt-1.5 text-xs font-medium whitespace-nowrap hidden sm:block ${
                   i === step ? 'text-[#c9a84c]' : i < step ? 'text-[#a0a0a0]' : 'text-[#3a3a3a]'
                 }`}
               >
@@ -120,7 +127,7 @@ export default function BookingWizard() {
             </div>
             {i < STEPS.length - 1 && (
               <div
-                className={`flex-1 h-px mx-3 mt-[-18px] transition-all duration-500 ${
+                className={`flex-1 h-px mx-2 sm:mx-3 mt-0 sm:mt-[-18px] transition-all duration-500 ${
                   i < step ? 'bg-[#c9a84c]' : 'bg-[#2a2a2a]'
                 }`}
               />

@@ -40,13 +40,18 @@ export async function getAvailableSlots(
   if (date < new Date(now.toDateString()) || date > maxDate) return []
 
   // Check if day is a ClosedDay
-  const startOfDay = new Date(date)
-  startOfDay.setHours(0, 0, 0, 0)
-  const endOfDay = new Date(date)
-  endOfDay.setHours(23, 59, 59, 999)
+  // We compare only the YYYY-MM-DD part or use a safer range
+  const [year, month, day] = date.toISOString().split('T')[0].split('-').map(Number)
+  const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0)
+  const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999)
 
   const closedDay = await prisma.closedDay.findFirst({
-    where: { date: { gte: startOfDay, lte: endOfDay } },
+    where: { 
+      date: { 
+        gte: startOfDay, 
+        lte: endOfDay 
+      } 
+    },
   })
   if (closedDay) return []
 
@@ -63,9 +68,7 @@ export async function getAvailableSlots(
     select: { bufferMinutes: true, defaultSchedule: true },
   })
   const bufferMinutes = settings?.bufferMinutes ?? 10
-  const defaultSchedule: WeekSchedule = settings?.defaultSchedule
-    ? JSON.parse(settings.defaultSchedule as string)
-    : {}
+  const defaultSchedule: WeekSchedule = (settings?.defaultSchedule as any) || {}
 
   const dayKey = getDayKey(date)
 
@@ -84,9 +87,7 @@ export async function getAvailableSlots(
   const allSlots: TimeSlot[] = []
 
   for (const stylist of stylists) {
-    const stylistSchedule: WeekSchedule = stylist.schedule
-      ? JSON.parse(stylist.schedule as string)
-      : {}
+    const stylistSchedule: WeekSchedule = (stylist.schedule as any) || {}
 
     // Use stylist schedule override if set, else default
     const daySchedule = stylistSchedule[dayKey] !== undefined

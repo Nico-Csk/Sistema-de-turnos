@@ -1,5 +1,6 @@
 import { NextAuthOptions, getServerSession } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { compare } from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,7 +16,14 @@ export const authOptions: NextAuthOptions = {
         const adminEmail = process.env.ADMIN_EMAIL || "admin@tupeluqueria.com"
         const adminPassword = process.env.ADMIN_PASSWORD || "admin123"
 
-        if (credentials.email === adminEmail && credentials.password === adminPassword) {
+        if (credentials.email !== adminEmail) return null
+
+        // Support both bcrypt hashed and plain text passwords
+        const isValid = adminPassword.startsWith('$2')
+          ? await compare(credentials.password, adminPassword)
+          : credentials.password === adminPassword
+
+        if (isValid) {
           return { id: "1", name: "Admin", email: adminEmail }
         }
 

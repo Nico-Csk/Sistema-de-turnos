@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,10 +14,7 @@ model Stylist {
   phone        String?
   photoUrl     String?
   active       Boolean       @default(true)
-  // SQLite doesn't natively support JSON arrays/objects. 
-  // We use String and parse it in the application. 
-  // Change to Json when migrating to PostgreSQL.
-  schedule     String
+  schedule     Json
   appointments Appointment[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -43,6 +40,7 @@ model Appointment {
   clientPhone String
   clientEmail String?
   notes       String?
+  cancelToken String?  @unique
   stylist     Stylist  @relation(fields: [stylistId], references: [id])
   stylistId   String
   service     Service  @relation(fields: [serviceId], references: [id])
@@ -53,6 +51,8 @@ model Appointment {
   @@index([date])
   @@index([stylistId])
   @@index([status])
+  @@index([cancelToken])
+  @@index([clientPhone])
 }
 
 model ClosedDay {
@@ -67,8 +67,7 @@ model Settings {
   id              String   @id @default("main")
   salonName       String   @default("Tu Peluquería")
   bufferMinutes   Int      @default(10)
-  // SQLite doesn't natively support JSON. Use String locally.
-  defaultSchedule String
+  defaultSchedule Json
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
