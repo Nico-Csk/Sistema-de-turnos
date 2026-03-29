@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
@@ -9,10 +9,24 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#c9a84c',
+}
+
 export const metadata: Metadata = {
   title: 'Tu Peluquería — Reservá tu turno online',
   description: 'Reservá tu turno en línea de forma rápida y sencilla. Elegí tu servicio, peluquero y horario favorito.',
   keywords: ['peluquería', 'turno', 'reserva', 'corte de cabello', 'barba'],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Tu Peluquería',
+  },
 }
 
 export default function RootLayout({

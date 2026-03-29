@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAvailableSlots } from '@/lib/availability'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function GET(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'anonymous'
+  const { success } = rateLimit(ip, { maxRequests: 30, interval: 60_000 })
+  if (!success) {
+    return NextResponse.json({ error: 'Demasiadas solicitudes' }, { status: 429 })
+  }
+
   const { searchParams } = new URL(request.url)
   const stylistId = searchParams.get('stylistId') || 'any'
   const serviceId = searchParams.get('serviceId')

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import crypto from 'crypto'
 import prisma from '@/lib/db'
 import { getAvailableSlots } from '@/lib/availability'
 import resend from '@/lib/resend'
 import BookingConfirmationEmail from '@/components/emails/BookingConfirmationEmail'
 import { formatDate, formatPrice } from '@/lib/utils'
+import { rateLimit } from '@/lib/rate-limit'
 
 const appointmentSchema = z.object({
   serviceId: z.string().min(1),
@@ -14,9 +16,20 @@ const appointmentSchema = z.object({
   clientPhone: z.string().min(6, 'El teléfono es obligatorio'),
   clientEmail: z.string().email('Email inválido').optional().or(z.literal('')),
   notes: z.string().optional(),
+  _honey: z.string().max(0).optional(), // honeypot field — must be empty
 })
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: max 5 appointment creations per minute per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'anonymous'
+  const { success } = rateLimit(ip, { maxRequests: 5, interval: 60_000 })
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Demasiadas solicitudes. Esperá un momento e intentá de nuevo.' },
+      { status: 429 }
+    )
+  }
+
   let body: unknown
   try {
     body = await request.json()
@@ -30,6 +43,12 @@ export async function POST(request: NextRequest) {
       { error: 'Datos inválidos', details: parsed.error.flatten().fieldErrors },
       { status: 422 }
     )
+  }
+
+  // Honeypot check: if the hidden field has a value, it's a bot
+  if (parsed.data._honey) {
+    // Silently accept but don't create anything
+    return NextResponse.json({ id: 'ok' }, { status: 201 })
   }
 
   const { serviceId, stylistId, date, clientName, clientPhone, clientEmail, notes } =
@@ -125,6 +144,8 @@ export async function POST(request: NextRequest) {
         throw new Error('El horario ya fue reservado por otro cliente')
       }
 
+      const cancelToken = crypto.randomBytes(32).toString('hex')
+
       return tx.appointment.create({
         data: {
           date: appointmentDate,
@@ -136,6 +157,7 @@ export async function POST(request: NextRequest) {
           notes: notes || null,
           stylistId: resolvedStylistId,
           serviceId,
+          cancelToken,
         },
         include: {
           stylist: { select: { name: true } },

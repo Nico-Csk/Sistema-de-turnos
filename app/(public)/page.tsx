@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Scissors, Clock, Star, ChevronRight, Sparkles } from 'lucide-react'
+import { Scissors, Clock, Star, ChevronRight, Sparkles, MapPin, Phone, Instagram, Search } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Tu Peluquería — Inicio',
@@ -57,14 +57,23 @@ export default function HomePage() {
             Elegí tu servicio, tu peluquero y el horario que más te convenga. Sin llamados, sin esperas.
           </p>
 
-          <Link
-            href="/reservar"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-lg text-[#0f0f0f] bg-gradient-to-r from-[#c9a84c] to-[#b87333] hover:from-[#e0c068] hover:to-[#c9a84c] shadow-lg shadow-[#c9a84c]/30 transition-all duration-300 hover:scale-105 hover:shadow-[#c9a84c]/40"
-          >
-            <Scissors className="w-5 h-5" />
-            Reservar ahora
-            <ChevronRight className="w-5 h-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/reservar"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-lg text-[#0f0f0f] bg-gradient-to-r from-[#c9a84c] to-[#b87333] hover:from-[#e0c068] hover:to-[#c9a84c] shadow-lg shadow-[#c9a84c]/30 transition-all duration-300 hover:scale-105 hover:shadow-[#c9a84c]/40"
+            >
+              <Scissors className="w-5 h-5" />
+              Reservar ahora
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/mis-turnos"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl font-medium text-[#a0a0a0] border border-[#2a2a2a] hover:border-[#c9a84c]/40 hover:text-[#c9a84c] transition-all duration-200"
+            >
+              <Search className="w-4 h-4" />
+              Consultar mi turno
+            </Link>
+          </div>
         </div>
 
         {/* Scroll hint */}
@@ -90,10 +99,12 @@ export default function HomePage() {
                 <p className="font-semibold text-white group-hover:text-[#c9a84c] transition-colors">
                   {svc.name}
                 </p>
-                <p className="text-sm text-[#a0a0a0] flex items-center gap-1.5 mt-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  {svc.duration}
-                </p>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <p className="text-sm text-[#a0a0a0] flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" />
+                    {svc.duration}
+                  </p>
+                </div>
               </div>
               <span className="text-[#c9a84c] font-bold text-lg">{svc.price}</span>
             </div>
@@ -133,9 +144,69 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="px-4 py-8 border-t border-[#2a2a2a] text-center text-[#3a3a3a] text-sm">
-        <p>© {new Date().getFullYear()} Tu Peluquería — Todos los derechos reservados</p>
+      <footer className="px-4 py-12 border-t border-[#2a2a2a]">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#c9a84c] to-[#b87333]">
+                  <Scissors className="w-4 h-4 text-[#0f0f0f]" />
+                </div>
+                <span className="font-bold text-white">Tu Peluquería</span>
+              </div>
+              <p className="text-sm text-[#a0a0a0] leading-relaxed">
+                Peluquería profesional con reserva online. Sin esperas, sin complicaciones.
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3 className="font-semibold text-white text-sm mb-3">Contacto</h3>
+              <div className="space-y-2 text-sm text-[#a0a0a0]">
+                <p className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#c9a84c]" />
+                  Av. Ejemplo 1234, CABA
+                </p>
+                <p className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[#c9a84c]" />
+                  +54 11 1234-5678
+                </p>
+                <p className="flex items-center gap-2">
+                  <Instagram className="w-4 h-4 text-[#c9a84c]" />
+                  @tupeluqueria
+                </p>
+              </div>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h3 className="font-semibold text-white text-sm mb-3">Enlaces</h3>
+              <div className="space-y-2 text-sm">
+                <Link href="/reservar" className="block text-[#a0a0a0] hover:text-[#c9a84c] transition-colors">
+                  Reservar turno
+                </Link>
+                <Link href="/mis-turnos" className="block text-[#a0a0a0] hover:text-[#c9a84c] transition-colors">
+                  Consultar mi turno
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-[#2a2a2a] pt-6 text-center text-[#3a3a3a] text-sm">
+            <p>&copy; {new Date().getFullYear()} Tu Peluquería — Todos los derechos reservados</p>
+          </div>
+        </div>
       </footer>
+
+      {/* Floating Action Button — mobile */}
+      <Link
+        href="/reservar"
+        className="fixed bottom-6 right-6 z-40 sm:hidden flex items-center gap-2 px-5 py-3.5 rounded-full font-semibold text-[#0f0f0f] bg-gradient-to-r from-[#c9a84c] to-[#b87333] shadow-xl shadow-[#c9a84c]/30 hover:shadow-[#c9a84c]/50 transition-all active:scale-95"
+      >
+        <Scissors className="w-5 h-5" />
+        Reservar
+      </Link>
     </main>
   )
 }

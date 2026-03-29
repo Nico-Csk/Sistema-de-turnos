@@ -40,6 +40,7 @@ model Appointment {
   clientPhone String
   clientEmail String?
   notes       String?
+  cancelToken String?  @unique
   stylist     Stylist  @relation(fields: [stylistId], references: [id])
   stylistId   String
   service     Service  @relation(fields: [serviceId], references: [id])
@@ -50,6 +51,8 @@ model Appointment {
   @@index([date])
   @@index([stylistId])
   @@index([status])
+  @@index([cancelToken])
+  @@index([clientPhone])
 }
 
 model ClosedDay {

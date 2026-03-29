@@ -13,6 +13,7 @@ export interface ClientData {
   phone: string
   email: string
   notes: string
+  _honey?: string
 }
 
 const clientSchema = z.object({
@@ -35,6 +36,7 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
     phone: '',
     email: '',
     notes: '',
+    _honey: '',
   })
   const [errors, setErrors] = useState<Partial<ClientData>>({})
 
@@ -86,6 +88,18 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
 
       {/* Form */}
       <div className="space-y-4">
+        {/* Honeypot — hidden from real users, bots fill it */}
+        <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
+          <input
+            type="text"
+            name="_honey"
+            autoComplete="off"
+            tabIndex={-1}
+            value={form._honey || ''}
+            onChange={(e) => setForm((f) => ({ ...f, _honey: e.target.value }))}
+          />
+        </div>
+
         <div>
           <label className="flex items-center gap-1.5 text-sm font-medium text-[#a0a0a0] mb-1.5">
             <User className="w-3.5 h-3.5" />
