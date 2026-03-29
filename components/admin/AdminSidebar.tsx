@@ -10,6 +10,8 @@ const navItems = [
   { name: 'Agenda', href: '/admin/agenda', icon: CalendarDays },
   { name: 'Servicios', href: '/admin/servicios', icon: Scissors },
   { name: 'Peluqueros', href: '/admin/peluqueros', icon: Users },
+  { name: 'Días Cerrados', href: '/admin/dias-cerrados', icon: CalendarDays },
+  { name: 'Configuración', href: '/admin/settings', icon: LayoutDashboard },
 ]
 
 export default function AdminSidebar() {
