@@ -18,7 +18,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Faltan parámetros requeridos' }, { status: 400 })
   }
 
-  const date = new Date(dateStr)
+  // Parse as local date (not UTC) to avoid timezone day-shift
+  const [y, m, d] = dateStr.split('-').map(Number)
+  if (!y || !m || !d) {
+    return NextResponse.json({ error: 'Fecha inválida' }, { status: 400 })
+  }
+  const date = new Date(y, m - 1, d)
   if (isNaN(date.getTime())) {
     return NextResponse.json({ error: 'Fecha inválida' }, { status: 400 })
   }

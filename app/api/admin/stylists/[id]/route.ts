@@ -22,3 +22,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ error: 'Error al actualizar' }, { status: 500 })
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const session = await getAuthSession()
+  if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+
+  try {
+    // Soft delete: set active to false instead of deleting
+    const res = await prisma.stylist.update({
+      where: { id: params.id },
+      data: { active: false }
+    })
+    return NextResponse.json(res)
+  } catch (error) {
+    return NextResponse.json({ error: 'Error al eliminar' }, { status: 500 })
+  }
+}

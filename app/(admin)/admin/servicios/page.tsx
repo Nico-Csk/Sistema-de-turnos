@@ -88,6 +88,17 @@ export default function ServiciosPage() {
     if (res.ok) fetchServices()
   }
 
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`¿Seguro que querés eliminar "${name}"?`)) return
+    const res = await fetch(`/api/admin/services/${id}`, { method: 'DELETE' })
+    if (res.ok) {
+      toast.success('Servicio eliminado')
+      fetchServices()
+    } else {
+      toast.error('Error al eliminar')
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto animate-[fadeIn_0.5s_ease-out]">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -152,6 +163,12 @@ export default function ServiciosPage() {
                         className="p-2 text-[#a0a0a0] hover:text-[#c9a84c] hover:bg-[#1a1a1a] rounded-lg transition-colors inline-block"
                       >
                         <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(svc.id, svc.name)}
+                        className="p-2 text-[#a0a0a0] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors inline-block ml-1"
+                      >
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
                   </tr>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Edit2, Loader2, X, User } from 'lucide-react'
+import { Plus, Edit2, Trash2, Loader2, X, User } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Stylist {
@@ -83,6 +83,17 @@ export default function PeluquerosPage() {
     if (res.ok) fetchStylists()
   }
 
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`¿Seguro que querés eliminar "${name}"?`)) return
+    const res = await fetch(`/api/admin/stylists/${id}`, { method: 'DELETE' })
+    if (res.ok) {
+      toast.success('Peluquero eliminado')
+      fetchStylists()
+    } else {
+      toast.error('Error al eliminar')
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto animate-[fadeIn_0.5s_ease-out]">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -149,6 +160,12 @@ export default function PeluquerosPage() {
                         className="p-2 text-[#a0a0a0] hover:text-[#c9a84c] hover:bg-[#1a1a1a] rounded-lg transition-colors inline-block"
                       >
                         <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(sty.id, sty.name)}
+                        className="p-2 text-[#a0a0a0] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors inline-block ml-1"
+                      >
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
                   </tr>

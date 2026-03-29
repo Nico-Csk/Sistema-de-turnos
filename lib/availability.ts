@@ -136,8 +136,8 @@ export async function getAvailableSlots(
 
     while (true) {
       const slotEnd = new Date(cursor.getTime() + slotDuration * 60000)
-      // Leave buffer before work end
-      if (slotEnd.getTime() + bufferMinutes * 60000 > workEnd.getTime()) break
+      // Slot must finish within working hours (no buffer needed at end of day)
+      if (slotEnd.getTime() > workEnd.getTime()) break
 
       // Check for overlap with existing appointments (including their buffer)
       const overlaps = existingAppointments.some((appt: { date: Date, endTime: Date }) => {
