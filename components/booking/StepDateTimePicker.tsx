@@ -21,7 +21,7 @@ interface Props {
   onSelect: (date: Date, time: string) => void
 }
 
-const DAYS_TO_SHOW = 14
+const DAYS_TO_SHOW = 7
 
 export default function StepDateTimePicker({
   service,
@@ -108,7 +108,7 @@ export default function StepDateTimePicker({
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-1.5">
+        <div className="grid grid-cols-7 gap-2">
           {days.map((day) => {
             const past = isPast(day)
             const selected = isSelectedDate(day)
@@ -117,7 +117,7 @@ export default function StepDateTimePicker({
                 key={day.toISOString()}
                 onClick={() => !past && selectDate(day)}
                 disabled={past}
-                className={`flex flex-col items-center py-2 px-1 rounded-xl text-center transition-all duration-200 ${
+                className={`flex flex-col items-center py-3 px-1 rounded-xl text-center transition-all duration-200 min-h-[52px] ${
                   past
                     ? 'opacity-20 cursor-not-allowed'
                     : selected

@@ -66,7 +66,7 @@ export default function StepServicePicker({ selected, onSelect }: Props) {
                 <span className={`text-lg font-bold ${isSelected ? 'text-[#c9a84c]' : 'text-[#c9a84c]'}`}>
                   {formatPrice(svc.price)}
                 </span>
-                <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#3a3a3a]'}`} />
+                <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#555555]'}`} />
               </div>
             </button>
           )

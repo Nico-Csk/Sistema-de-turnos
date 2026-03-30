@@ -110,7 +110,7 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
             placeholder="Ej: Juan Pérez"
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
-            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#3a3a3a] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#555555] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
               errors.name ? 'border-red-500/50' : 'border-[#2a2a2a]'
             }`}
           />
@@ -127,7 +127,7 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
             placeholder="Ej: 11 2345-6789"
             value={form.phone}
             onChange={(e) => handleChange('phone', e.target.value)}
-            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#3a3a3a] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#555555] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
               errors.phone ? 'border-red-500/50' : 'border-[#2a2a2a]'
             }`}
           />
@@ -137,14 +137,14 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
         <div>
           <label className="flex items-center gap-1.5 text-sm font-medium text-[#a0a0a0] mb-1.5">
             <Mail className="w-3.5 h-3.5" />
-            Email <span className="text-[#3a3a3a] text-xs">(opcional)</span>
+            Email <span className="text-[#707070] text-xs">(opcional)</span>
           </label>
           <input
             type="email"
             placeholder="Ej: juan@email.com"
             value={form.email}
             onChange={(e) => handleChange('email', e.target.value)}
-            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#3a3a3a] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border text-white placeholder-[#555555] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors ${
               errors.email ? 'border-red-500/50' : 'border-[#2a2a2a]'
             }`}
           />
@@ -154,14 +154,14 @@ export default function StepClientForm({ booking, submitting, onConfirm, onBack 
         <div>
           <label className="flex items-center gap-1.5 text-sm font-medium text-[#a0a0a0] mb-1.5">
             <StickyNote className="w-3.5 h-3.5" />
-            Notas <span className="text-[#3a3a3a] text-xs">(opcional)</span>
+            Notas <span className="text-[#707070] text-xs">(opcional)</span>
           </label>
           <textarea
             rows={2}
             placeholder="Ej: Cortame sólo las puntas"
             value={form.notes}
             onChange={(e) => handleChange('notes', e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#2a2a2a] text-white placeholder-[#3a3a3a] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors resize-none"
+            className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#2a2a2a] text-white placeholder-[#555555] text-sm focus:outline-none focus:border-[#c9a84c] transition-colors resize-none"
           />
         </div>
       </div>

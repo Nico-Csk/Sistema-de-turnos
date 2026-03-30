@@ -65,7 +65,7 @@ export default function StepStylistPicker({ selected, onSelect }: Props) {
             </p>
             <p className="text-xs text-[#a0a0a0] mt-0.5">Primer peluquero disponible</p>
           </div>
-          <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected('any') ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#3a3a3a]'}`} />
+          <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected('any') ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#555555]'}`} />
         </button>
 
         {/* Individual stylists */}
@@ -88,7 +88,7 @@ export default function StepStylistPicker({ selected, onSelect }: Props) {
               </p>
               <p className="text-xs text-[#a0a0a0] mt-0.5">Peluquero</p>
             </div>
-            <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected(sty.id) ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#3a3a3a]'}`} />
+            <div className={`w-4 h-4 rounded-full border-2 transition-all ${isSelected(sty.id) ? 'border-[#c9a84c] bg-[#c9a84c]' : 'border-[#555555]'}`} />
           </button>
         ))}
       </div>

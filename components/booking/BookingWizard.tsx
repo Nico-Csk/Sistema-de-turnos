@@ -119,7 +119,7 @@ export default function BookingWizard() {
               </div>
               <span
                 className={`mt-1.5 text-xs font-medium whitespace-nowrap hidden sm:block ${
-                  i === step ? 'text-[#c9a84c]' : i < step ? 'text-[#a0a0a0]' : 'text-[#3a3a3a]'
+                  i === step ? 'text-[#c9a84c]' : i < step ? 'text-[#a0a0a0]' : 'text-[#555555]'
                 }`}
               >
                 {label}
@@ -173,14 +173,15 @@ export default function BookingWizard() {
 
       {/* Navigation */}
       {step < 3 && (
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#2a2a2a]">
-          <button
-            onClick={() => setStep((s) => Math.max(0, s - 1))}
-            disabled={step === 0}
-            className="px-5 py-2.5 rounded-xl text-sm font-medium text-[#a0a0a0] border border-[#2a2a2a] hover:border-[#3a3a3a] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-          >
-            Anterior
-          </button>
+        <div className={`flex items-center mt-8 pt-6 border-t border-[#2a2a2a] ${step === 0 ? 'justify-end' : 'justify-between'}`}>
+          {step > 0 && (
+            <button
+              onClick={() => setStep((s) => Math.max(0, s - 1))}
+              className="px-5 py-2.5 rounded-xl text-sm font-medium text-[#a0a0a0] border border-[#2a2a2a] hover:border-[#3a3a3a] hover:text-white transition-all"
+            >
+              Anterior
+            </button>
+          )}
 
           <button
             onClick={() => setStep((s) => s + 1)}

@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0f0f0f]">
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center px-4">
+      <section className="relative overflow-hidden min-h-[70vh] sm:min-h-screen flex items-center justify-center px-4 py-16 sm:py-0">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#0f0f0f] to-[#0a0a0a]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(201,168,76,0.08)_0%,_transparent_60%)]" />
@@ -76,8 +76,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#3a3a3a] animate-bounce">
+        {/* Scroll hint — desktop only */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-[#606060] animate-bounce">
           <div className="w-px h-8 bg-gradient-to-b from-transparent to-[#c9a84c]/30" />
         </div>
       </section>
@@ -193,7 +193,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="border-t border-[#2a2a2a] pt-6 text-center text-[#3a3a3a] text-sm">
+          <div className="border-t border-[#2a2a2a] pt-6 text-center text-[#606060] text-sm">
             <p>&copy; {new Date().getFullYear()} Tu Peluquería — Todos los derechos reservados</p>
           </div>
         </div>
