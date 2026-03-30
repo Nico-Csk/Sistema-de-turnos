@@ -1,11 +1,12 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { CheckCircle, Calendar, Scissors, User, Clock, ChevronRight, Download, XCircle } from 'lucide-react'
+import { CheckCircle, Calendar, Scissors, User, Clock, ChevronRight, Download, XCircle, Loader2 } from 'lucide-react'
 import { formatDate, formatTime, capitalize } from '@/lib/utils'
 
-export default function ConfirmacionPage() {
+function ConfirmacionContent() {
   const params = useSearchParams()
 
   const id = params.get('id') || ''
@@ -154,5 +155,17 @@ export default function ConfirmacionPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function ConfirmacionPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#c9a84c] animate-spin" />
+      </main>
+    }>
+      <ConfirmacionContent />
+    </Suspense>
   )
 }

@@ -16,6 +16,10 @@ export default function SettingsPage() {
         setSettings(data)
         setLoading(false)
       })
+      .catch(() => {
+        toast.error('Error al cargar configuración')
+        setLoading(false)
+      })
   }, [])
 
   const handleSave = async () => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Calendar, Clock, User, Scissors, Loader2, XCircle, CheckCircle, AlertTriangle } from 'lucide-react'
@@ -16,7 +16,7 @@ interface AppointmentData {
   stylist: { name: string }
 }
 
-export default function MiTurnoPage() {
+function MiTurnoContent() {
   const params = useSearchParams()
   const token = params.get('token')
 
@@ -199,5 +199,17 @@ export default function MiTurnoPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function MiTurnoPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#c9a84c] animate-spin" />
+      </main>
+    }>
+      <MiTurnoContent />
+    </Suspense>
   )
 }

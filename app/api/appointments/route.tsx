@@ -16,7 +16,7 @@ const appointmentSchema = z.object({
   clientPhone: z.string().min(6, 'El teléfono es obligatorio'),
   clientEmail: z.string().email('Email inválido').optional().or(z.literal('')),
   notes: z.string().optional(),
-  _honey: z.string().max(0).optional(), // honeypot field — must be empty
+  _honey: z.string().optional(), // honeypot field — checked before validation
 })
 
 export async function POST(request: NextRequest) {
@@ -37,18 +37,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
   }
 
+  // Honeypot check: if the hidden field has a value, it's a bot
+  if (typeof body === 'object' && body !== null && '_honey' in body && (body as any)._honey) {
+    // Silently accept but don't create anything — don't reveal the trap
+    return NextResponse.json({ id: 'ok' }, { status: 201 })
+  }
+
   const parsed = appointmentSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
       { error: 'Datos inválidos', details: parsed.error.flatten().fieldErrors },
       { status: 422 }
     )
-  }
-
-  // Honeypot check: if the hidden field has a value, it's a bot
-  if (parsed.data._honey) {
-    // Silently accept but don't create anything
-    return NextResponse.json({ id: 'ok' }, { status: 201 })
   }
 
   const { serviceId, stylistId, date, clientName, clientPhone, clientEmail, notes } =

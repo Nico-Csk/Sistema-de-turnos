@@ -24,6 +24,10 @@ export default function ClosedDaysPage() {
         setClosedDays(data)
         setLoading(false)
       })
+      .catch(() => {
+        toast.error('Error al cargar días cerrados')
+        setLoading(false)
+      })
   }
 
   const handleAdd = async () => {
