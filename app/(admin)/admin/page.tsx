@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import prisma from '@/lib/db'
 import { format, startOfDay, endOfDay, startOfWeek, endOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
