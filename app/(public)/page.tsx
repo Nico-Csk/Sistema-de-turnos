@@ -4,6 +4,8 @@ import { Scissors, Clock, Star, ChevronRight, Sparkles, MapPin, Phone, Instagram
 import prisma from '@/lib/db'
 import { formatPrice } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Tu Peluquería — Inicio',
   description: 'Peluquería profesional. Reservá tu turno online en segundos.',
