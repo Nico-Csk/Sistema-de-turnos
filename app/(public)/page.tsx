@@ -1,21 +1,19 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Scissors, Clock, Star, ChevronRight, Sparkles, MapPin, Phone, Instagram, Search } from 'lucide-react'
+import prisma from '@/lib/db'
+import { formatPrice } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Tu Peluquería — Inicio',
   description: 'Peluquería profesional. Reservá tu turno online en segundos.',
 }
 
-const services = [
-  { name: 'Corte Caballero', duration: '30 min', price: '$5.000' },
-  { name: 'Corte Dama', duration: '45 min', price: '$7.000' },
-  { name: 'Corte Infantil', duration: '20 min', price: '$3.500' },
-  { name: 'Barba', duration: '20 min', price: '$2.500' },
-  { name: 'Corte + Barba', duration: '45 min', price: '$6.500' },
-]
-
-export default function HomePage() {
+export default async function HomePage() {
+  const services = await prisma.service.findMany({
+    where: { active: true },
+    orderBy: { price: 'asc' },
+  })
   return (
     <main className="min-h-screen bg-[#0f0f0f]">
       {/* Hero */}
@@ -83,6 +81,7 @@ export default function HomePage() {
       </section>
 
       {/* Services preview */}
+      {services.length > 0 && (
       <section className="px-4 py-20 max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-3">Nuestros servicios</h2>
@@ -92,7 +91,7 @@ export default function HomePage() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((svc) => (
             <div
-              key={svc.name}
+              key={svc.id}
               className="group bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-5 flex items-center justify-between hover:border-[#c9a84c]/40 hover:bg-[#1f1f1f] transition-all duration-200"
             >
               <div>
@@ -102,11 +101,11 @@ export default function HomePage() {
                 <div className="flex items-center gap-3 mt-1.5">
                   <p className="text-sm text-[#a0a0a0] flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" />
-                    {svc.duration}
+                    {svc.duration} min
                   </p>
                 </div>
               </div>
-              <span className="text-[#c9a84c] font-bold text-lg">{svc.price}</span>
+              <span className="text-[#c9a84c] font-bold text-lg">{formatPrice(svc.price)}</span>
             </div>
           ))}
         </div>
@@ -121,6 +120,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+      )}
 
       {/* Trust signals */}
       <section className="px-4 py-16 border-t border-[#2a2a2a]">
